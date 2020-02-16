@@ -7,9 +7,9 @@
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <center>
       <Pane prefHeight="400.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-         <Slider fx:id="sliderX" blockIncrement="1.0" layoutX="14.0" layoutY="311.0" majorTickUnit="32.0" max="255.0" minorTickCount="5" prefHeight="32.0" prefWidth="256.0" showTickLabels="true" snapToTicks="true" />
-         <Slider fx:id="sliderY" blockIncrement="1.0" layoutX="372.0" layoutY="311.0" majorTickUnit="32.0" max="255.0" minorTickCount="5" prefHeight="16.0" prefWidth="256.0" showTickLabels="true" snapToTicks="true" />
-         <Slider fx:id="sliderZ" blockIncrement="1.0" layoutX="730.0" layoutY="311.0" majorTickUnit="15.0" max="112.0" minorTickCount="5" prefHeight="16.0" prefWidth="256.0" showTickLabels="true" snapToTicks="true" />
+         <Slider fx:id="sliderX" blockIncrement="1.0" layoutX="14.0" layoutY="311.0" majorTickUnit="32.0" max="255.0" minorTickCount="1" prefHeight="32.0" prefWidth="256.0" showTickLabels="true" snapToTicks="true" />
+         <Slider fx:id="sliderY" blockIncrement="1.0" layoutX="372.0" layoutY="311.0" majorTickUnit="32.0" max="255.0" minorTickCount="1" prefHeight="16.0" prefWidth="256.0" showTickLabels="true" snapToTicks="true" />
+         <Slider fx:id="sliderZ" blockIncrement="1.0" layoutX="730.0" layoutY="311.0" majorTickUnit="15.0" max="112.0" minorTickCount="1" prefHeight="16.0" prefWidth="256.0" showTickLabels="true" snapToTicks="true" />
          <ImageView fx:id="imageViewX" fitHeight="256.0" fitWidth="256.0" layoutX="85.0" layoutY="-57.0" pickOnBounds="true" preserveRatio="true" rotate="90.0" />
          <ImageView fx:id="imageViewY" fitHeight="256.0" fitWidth="256.0" layoutX="372.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
          <ImageView fx:id="imageViewZ" fitHeight="256.0" fitWidth="256.0" layoutX="730.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />

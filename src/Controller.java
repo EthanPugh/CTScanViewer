@@ -31,9 +31,9 @@ public class Controller {
     }
 
     private void setupImages() {
-        imageX = data.getSliceX(0);
-        imageY = data.getSliceY(0);
-        imageZ = data.getSliceZ(0);
+        imageX = data.getSlice(0, Axis.X);
+        imageY = data.getSlice(0, Axis.Y);
+        imageZ = data.getSlice(0, Axis.Z);
         imageViewX.setImage(imageX);
         imageViewY.setImage(imageY);
         imageViewZ.setImage(imageZ);
@@ -42,17 +42,17 @@ public class Controller {
     private void setupSliders() {
         sliderX.setOnMouseDragged(event -> {
             sliceValX = sliderX.valueProperty().intValue();
-            imageX = data.getSliceX(sliceValX);
+            imageX = data.getSlice(sliceValX, Axis.X);
             imageViewX.setImage(imageX);
         });
         sliderY.setOnMouseDragged(event -> {
             sliceValY = sliderY.valueProperty().intValue();
-            imageY = data.getSliceY(sliceValY);
+            imageY = data.getSlice(sliceValY, Axis.Y);
             imageViewY.setImage(imageY);
         });
         sliderZ.setOnMouseDragged(event -> {
             sliceValZ = sliderZ.valueProperty().intValue();
-            imageZ = data.getSliceZ(sliderZ.valueProperty().intValue());
+            imageZ = data.getSlice(sliceValZ, Axis.Z);
             imageViewZ.setImage(imageZ);
         });
         sliderXS.setOnMouseReleased(event -> {

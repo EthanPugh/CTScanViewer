@@ -9,17 +9,21 @@ public class Volume {
 
     private final int WIDTH = 256, HEIGHT = 256;
     private WritableImage mipX, mipY, mipZ;
+    private WritableImage[] slicesX, slicesY, slicesZ;
     private short[][][] data;
     private int max, min;
 
     public Volume(String filename) throws IOException {
-        setupData(filename);
-        setMIP(Axis.X);
-        setMIP(Axis.Y);
-        setMIP(Axis.Z);
+        setData(filename);
+        setSlicesX();
+        setSlicesY();
+        setSlicesZ();
+        setMIPX();
+        setMIPY();
+        setMIPZ();
     }
 
-    private void setupData(String filename) throws IOException {
+    private void setData(String filename) throws IOException {
         File file = new File(filename);
         DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
 
@@ -45,129 +49,112 @@ public class Volume {
         System.out.println("Minimum: " + min + ", Max: " + max);
     }
 
-    private void setMIP(Axis axis) {
-        WritableImage image;
-        PixelWriter imageWriter;
-        short datum;
-        float colMax;
-        if (axis.equals(Axis.X)) {
-            image = new WritableImage(113, HEIGHT);
-            imageWriter = image.getPixelWriter();
-            for (int j = 0; j < HEIGHT; j++) {
-                for (int k = 0; k < 113; k++) {
-                    colMax = -max;
-                    for (int i = 0; i < WIDTH; i++) {
-                        datum = data[k][j][i];
-                        colMax = Float.max((((float) datum - (float) min) / ((float) (max - min))), colMax);
-                        for (int c = 0; c < 3; c++) {
-                            imageWriter.setColor(k, j, Color.color(colMax, colMax, colMax, 1.0));
-                        }
-                    }
-                }
-            }
-            mipX = image;
-        } else if (axis.equals(Axis.Y)) {
-            image = new WritableImage(WIDTH, 113);
-            imageWriter = image.getPixelWriter();
-            for (int k = 0; k < 113; k++) {
-                for (int i = 0; i < WIDTH; i++) {
-                    colMax = -max;
-                    for (int j = 0; j < HEIGHT; j++) {
-                        datum = data[k][j][i];
-                        colMax = Float.max((((float) datum - (float) min) / ((float) (max - min))), colMax);
-                        for (int c = 0; c < 3; c++) {
-                            imageWriter.setColor(i, k, Color.color(colMax, colMax, colMax, 1.0));
-                        }
-                    }
-                }
-            }
-            mipY = image;
-        } else if (axis.equals(Axis.Z)) {
-            image = new WritableImage(WIDTH, HEIGHT);
-            imageWriter = image.getPixelWriter();
-            for (int j = 0; j < HEIGHT; j++) {
-                for (int i = 0; i < WIDTH; i++) {
-                    colMax = -max;
-                    for (int k = 0; k < 113; k++) {
-                        datum = data[k][j][i];
-                        colMax = Float.max((((float) datum - (float) min) / ((float) (max - min))), colMax);
-                        for (int c = 0; c < 3; c++) {
-                            imageWriter.setColor(i, j, Color.color(colMax, colMax, colMax, 1.0));
-                        }
-                    }
-                }
-            }
-            mipZ = image;
-        }
-    }
-
-    public WritableImage getMipX() {
-        return mipX;
-    }
-
-    public WritableImage getMipY() {
-        return mipY;
-    }
-
-    public WritableImage getMipZ() {
-        return mipZ;
-    }
-
-    public WritableImage getSliceX(int sliderVal) {
-        WritableImage image;
-        PixelWriter imageWriter;
+    private void setSlicesX() {
+        slicesX = new WritableImage[256];
         short datum;
         float col;
-        image = new WritableImage(113, HEIGHT);
-        imageWriter = image.getPixelWriter();
-        for (int j = 0; j < HEIGHT; j++) {
-            for (int k = 0; k < 113; k++) {
-                datum = data[k][j][sliderVal];
-                col = (((float) datum - (float) min) / ((float) (max - min)));
-                for (int c = 0; c < 3; c++) {
+        for (int i = 0; i < 256; i++) {
+            WritableImage image = new WritableImage(113, 256);
+            PixelWriter imageWriter = image.getPixelWriter();
+            for (int j = 0; j < 256; j++) {
+                for (int k = 0; k < 113; k++) {
+                    datum = data[k][j][i];
+                    col = (((float) datum - (float) min) / ((float) (max - min)));
                     imageWriter.setColor(k, j, Color.color(col, col, col, 1.0));
                 }
             }
+            slicesX[i] = image;
         }
-        return image;
     }
 
-    public WritableImage getSliceY(int sliderVal) {
-        WritableImage image;
-        PixelWriter imageWriter;
+    private void setSlicesY() {
+        slicesY = new WritableImage[256];
         short datum;
         float col;
-        image = new WritableImage(WIDTH, 113);
-        imageWriter = image.getPixelWriter();
-        for (int k = 0; k < 113; k++) {
-            for (int i = 0; i < WIDTH; i++) {
-                datum = data[k][sliderVal][i];
-                col = (((float) datum - (float) min) / ((float) (max - min)));
-                for (int c = 0; c < 3; c++) {
+        for (int j = 0; j < 256; j++) {
+            WritableImage image = new WritableImage(256, 113);
+            PixelWriter imageWriter = image.getPixelWriter();
+            for (int k = 0; k < 113; k++) {
+                for (int i = 0; i < 256; i++) {
+                    datum = data[k][j][i];
+                    col = (((float) datum - (float) min) / ((float) (max - min)));
                     imageWriter.setColor(i, k, Color.color(col, col, col, 1.0));
                 }
             }
+            slicesY[j] = image;
         }
-        return image;
     }
 
-    public WritableImage getSliceZ(int sliderVal) {
-        WritableImage image;
-        PixelWriter imageWriter;
+    private void setSlicesZ() {
+        slicesZ = new WritableImage[113];
         short datum;
         float col;
-        image = new WritableImage(WIDTH, HEIGHT);
-        imageWriter = image.getPixelWriter();
-        for (int j = 0; j < HEIGHT; j++) {
-            for (int i = 0; i < WIDTH; i++) {
-                datum = data[sliderVal][j][i];
-                col = (((float) datum - (float) min) / ((float) (max - min)));
-                for (int c = 0; c < 3; c++) {
+        for (int k = 0; k < 113; k++) {
+            WritableImage image = new WritableImage(256, 256);
+            PixelWriter imageWriter = image.getPixelWriter();
+            for (int i = 0; i < 256; i++) {
+                for (int j = 0; j < 256; j++) {
+                    datum = data[k][j][i];
+                    col = (((float) datum - (float) min) / ((float) (max - min)));
                     imageWriter.setColor(i, j, Color.color(col, col, col, 1.0));
                 }
             }
+            slicesZ[k] = image;
         }
-        return image;
+    }
+
+    private void setMIPX() {
+        WritableImage image = new WritableImage(113, HEIGHT);
+        PixelWriter imageWriter = image.getPixelWriter();
+        short datum;
+        float colMax;
+        for (int j = 0; j < HEIGHT; j++) {
+            for (int k = 0; k < 113; k++) {
+                colMax = -max;
+                for (int i = 0; i < WIDTH; i++) {
+                    datum = data[k][j][i];
+                    colMax = Float.max((((float) datum - (float) min) / ((float) (max - min))), colMax);
+                    imageWriter.setColor(k, j, Color.color(colMax, colMax, colMax, 1.0));
+                }
+            }
+        }
+        mipX = image;
+    }
+
+    private void setMIPY() {
+        WritableImage image = new WritableImage(WIDTH, 113);
+        PixelWriter imageWriter = image.getPixelWriter();
+        short datum;
+        float colMax;
+        for (int k = 0; k < 113; k++) {
+            for (int i = 0; i < WIDTH; i++) {
+                colMax = -max;
+                for (int j = 0; j < HEIGHT; j++) {
+                    datum = data[k][j][i];
+                    colMax = Float.max((((float) datum - (float) min) / ((float) (max - min))), colMax);
+                    imageWriter.setColor(i, k, Color.color(colMax, colMax, colMax, 1.0));
+                }
+            }
+        }
+        mipY = image;
+    }
+
+    private void setMIPZ() {
+       WritableImage image = new WritableImage(WIDTH, HEIGHT);
+      PixelWriter  imageWriter = image.getPixelWriter();
+      short datum;
+      float colMax;
+        for (int j = 0; j < HEIGHT; j++) {
+            for (int i = 0; i < WIDTH; i++) {
+                colMax = -max;
+                for (int k = 0; k < 113; k++) {
+                    datum = data[k][j][i];
+                    colMax = Float.max((((float) datum - (float) min) / ((float) (max - min))), colMax);
+                    imageWriter.setColor(i, j, Color.color(colMax, colMax, colMax, 1.0));
+                }
+            }
+        }
+        mipZ = image;
     }
 
     public WritableImage getScaledSliceX(WritableImage oldImage, float scaleX, float scaleY, int sliceVal) {
@@ -248,6 +235,31 @@ public class Volume {
             }
         }
         return newImage;
+    }
+
+
+
+
+    public WritableImage getSlice(int val, Axis a) {
+        if (a.equals(Axis.X)) {
+            return slicesX[val];
+        } else if (a.equals(Axis.Y)) {
+            return slicesY[val];
+        } else {
+            return slicesZ[val];
+        }
+    }
+
+    public WritableImage getMipX() {
+        return mipX;
+    }
+
+    public WritableImage getMipY() {
+        return mipY;
+    }
+
+    public WritableImage getMipZ() {
+        return mipZ;
     }
 
 }
