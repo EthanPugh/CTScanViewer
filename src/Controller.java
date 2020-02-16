@@ -24,7 +24,7 @@ public class Controller {
 
     @FXML
     private void initialize() throws IOException {
-        data = new Volume("src/resources/CT_head.raw");
+        data = new Volume("src/resources/CT_head.raw", 256, 256, 113);
         setupImages();
         setupSliders();
         setupButtons();
@@ -78,15 +78,15 @@ public class Controller {
 
     private void setupButtons() {
         buttonMIPX.setOnMouseClicked(event -> {
-            imageX = data.getMipX();
+            imageX = data.getMIP(Axis.X);
             imageViewX.setImage(imageX);
         });
         buttonMIPY.setOnMouseClicked(event -> {
-            imageY = data.getMipY();
+            imageY = data.getMIP(Axis.Y);
             imageViewY.setImage(imageY);
         });
         buttonMIPZ.setOnMouseClicked(event -> {
-            imageZ = data.getMipZ();
+            imageZ = data.getMIP(Axis.Z);
             imageViewZ.setImage(imageZ);
         });
     }
