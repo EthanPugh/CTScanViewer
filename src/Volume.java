@@ -22,9 +22,10 @@ public class Volume {
         setSlicesX();
         setSlicesY();
         setSlicesZ();
-        setMIPX();
-        setMIPY();
-        setMIPZ();
+        setMIP();
+        //setMIPX();
+        //setMIPY();
+        //setMIPZ();
     }
 
     private void setData(String filename) throws IOException {
@@ -103,6 +104,12 @@ public class Volume {
             }
             slicesZ[k] = ImageManipulator.resize(image, WIDTH, HEIGHT);
         }
+    }
+
+    private void setMIP() {
+        mipX = ImageManipulator.generateMIP(slicesX);
+        mipY = ImageManipulator.generateMIP(slicesY);
+        mipZ = ImageManipulator.generateMIP(slicesZ);
     }
 
     private void setMIPX() {
