@@ -3,8 +3,21 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
+/**
+ * Manipulates images in various ways.
+ *
+ * @author Ethan Pugh
+ */
 public class ImageManipulator {
 
+    /**
+     * Resize an image to a new specified width and height.
+     *
+     * @param oldImage The image to be resized.
+     * @param newWidth The width of the new image/resized image.
+     * @param newHeight The height of the new image/resized image.
+     * @return The same image but resized.
+     */
     public static WritableImage resize(WritableImage oldImage, final float newWidth, final float newHeight) {
         final float oldWidth = (float) oldImage.getWidth();
         final float oldHeight = (float) oldImage.getHeight();
@@ -23,6 +36,13 @@ public class ImageManipulator {
         return newImage;
     }
 
+    /**
+     * Scale an image by a specified amount.
+     *
+     * @param oldImage The image to be scaled.
+     * @param scale The amount to increase/decrease the size of the image.
+     * @return The same image but scaled accordingly.
+     */
     public static WritableImage scale(WritableImage oldImage, final float scale) {
         final float newWidth = (float) (oldImage.getWidth() * scale);
         final float newHeight = (float) (oldImage.getHeight() * scale);
@@ -30,6 +50,12 @@ public class ImageManipulator {
         return ImageManipulator.resize(oldImage, newWidth, newHeight);
     }
 
+    /**
+     * Generate the MIP out of a set of slices.
+     *
+     * @param slices The images to be used in generating the MIP.
+     * @return A single image of the MIP.
+     */
     public static WritableImage generateMIP(WritableImage[] slices) {
         final int WIDTH = (int) slices[0].getWidth();
         final int HEIGHT = (int) slices[0].getHeight();

@@ -4,18 +4,32 @@ import javafx.scene.paint.Color;
 
 import java.io.*;
 
+/**
+ * Defines a single set of data for a 3D image or CT scan.
+ *
+ * @author Ethan Pugh
+ */
 public class Volume {
 
-    private int WIDTH, HEIGHT, DEPTH;
+    private int width, height, depth;
     private WritableImage mipX, mipY, mipZ;
     private WritableImage[] slicesX, slicesY, slicesZ;
     private short[][][] data;
     private int max, min;
 
+    /**
+     * Constructor for a given volume of data.
+     *
+     * @param filename The path and name of the file to be read.
+     * @param width The width of the volume.
+     * @param height The height of the volume.
+     * @param depth The depth of the volume.
+     * @throws IOException If the file is not found.
+     */
     public Volume(String filename, int width, int height, int depth) throws IOException {
-        this.WIDTH = width;
-        this.HEIGHT = height;
-        this.DEPTH = depth;
+        this.width = width;
+        this.height = height;
+        this.depth = depth;
         setData(filename);
         setSlicesX();
         setSlicesY();
@@ -23,17 +37,23 @@ public class Volume {
         setMIP();
     }
 
+    /**
+     * Sets up the data for the volume and stores it in a 3D array.
+     *
+     * @param filename The path and name of the file to be read.
+     * @throws IOException If the file is not found.
+     */
     private void setData(String filename) throws IOException {
         File file = new File(filename);
         DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
-        data = new short[DEPTH][HEIGHT][WIDTH];
+        data = new short[depth][height][width];
         max = Short.MIN_VALUE;
         min = Short.MAX_VALUE;
         short r;
         int b1, b2;
-        for (int k = 0; k < DEPTH; k++) {
-            for (int j = 0; j < HEIGHT; j++) {
-                for (int i = 0; i < WIDTH; i++) {
+        for (int k = 0; k < depth; k++) {
+            for (int j = 0; j < height; j++) {
+                for (int i = 0; i < width; i++) {
                     b1 = (int) in.readByte() & 0xff;
                     b2 = (int) in.readByte() & 0xff;
                     r = (short) ((b2 << 8) | b1);
@@ -47,66 +67,85 @@ public class Volume {
         in.close();
     }
 
+    /**
+     * Generates all the x-axis images and stores them in the respective image array.
+     */
     private void setSlicesX() {
-        slicesX = new WritableImage[WIDTH];
+        slicesX = new WritableImage[width];
         short datum;
         float col;
-        for (int i = 0; i < WIDTH; i++) {
-            WritableImage image = new WritableImage(DEPTH, HEIGHT);
+        for (int i = 0; i < width; i++) {
+            WritableImage image = new WritableImage(depth, height);
             PixelWriter imageWriter = image.getPixelWriter();
-            for (int j = 0; j < HEIGHT; j++) {
-                for (int k = 0; k < DEPTH; k++) {
+            for (int j = 0; j < height; j++) {
+                for (int k = 0; k < depth; k++) {
                     datum = data[k][j][i];
                     col = (((float) datum - (float) min) / ((float) (max - min)));
                     imageWriter.setColor(k, j, Color.color(col, col, col, 1.0));
                 }
             }
-            slicesX[i] = ImageManipulator.resize(image, WIDTH, HEIGHT);
+            slicesX[i] = ImageManipulator.resize(image, width, height);
         }
     }
 
+    /**
+     * Generates all the y-axis images and stores them in the respective image array.
+     */
     private void setSlicesY() {
-        slicesY = new WritableImage[HEIGHT];
+        slicesY = new WritableImage[height];
         short datum;
         float col;
-        for (int j = 0; j < HEIGHT; j++) {
-            WritableImage image = new WritableImage(WIDTH, DEPTH);
+        for (int j = 0; j < height; j++) {
+            WritableImage image = new WritableImage(width, depth);
             PixelWriter imageWriter = image.getPixelWriter();
-            for (int k = 0; k < DEPTH; k++) {
-                for (int i = 0; i < WIDTH; i++) {
+            for (int k = 0; k < depth; k++) {
+                for (int i = 0; i < width; i++) {
                     datum = data[k][j][i];
                     col = (((float) datum - (float) min) / ((float) (max - min)));
                     imageWriter.setColor(i, k, Color.color(col, col, col, 1.0));
                 }
             }
-            slicesY[j] = ImageManipulator.resize(image, WIDTH, HEIGHT);
+            slicesY[j] = ImageManipulator.resize(image, width, height);
         }
     }
 
+    /**
+     * Generates all the z-axis images and stores them in the respective image array.
+     */
     private void setSlicesZ() {
-        slicesZ = new WritableImage[DEPTH];
+        slicesZ = new WritableImage[depth];
         short datum;
         float col;
-        for (int k = 0; k < DEPTH; k++) {
-            WritableImage image = new WritableImage(WIDTH, HEIGHT);
+        for (int k = 0; k < depth; k++) {
+            WritableImage image = new WritableImage(width, height);
             PixelWriter imageWriter = image.getPixelWriter();
-            for (int i = 0; i < WIDTH; i++) {
-                for (int j = 0; j < HEIGHT; j++) {
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
                     datum = data[k][j][i];
                     col = (((float) datum - (float) min) / ((float) (max - min)));
                     imageWriter.setColor(i, j, Color.color(col, col, col, 1.0));
                 }
             }
-            slicesZ[k] = ImageManipulator.resize(image, WIDTH, HEIGHT);
+            slicesZ[k] = ImageManipulator.resize(image, width, height);
         }
     }
 
+    /**
+     * Retrieves the MIPs for each axis using the ImageManipulator.
+     */
     private void setMIP() {
         mipX = ImageManipulator.generateMIP(slicesX);
         mipY = ImageManipulator.generateMIP(slicesY);
         mipZ = ImageManipulator.generateMIP(slicesZ);
     }
 
+    /**
+     * Gets an image of a slice from one of the axes.
+     *
+     * @param val The slice number to get.
+     * @param a The axis to get the slice from.
+     * @return An image of a slice.
+     */
     public WritableImage getSlice(int val, Axis a) {
         if (a.equals(Axis.X)) {
             return slicesX[val];
@@ -117,6 +156,12 @@ public class Volume {
         }
     }
 
+    /**
+     * Gets an image of the MIP for all slices in one axis.
+     *
+     * @param a The axis to get the MIP for.
+     * @return An image of the MIP.
+     */
     public WritableImage getMIP(Axis a) {
         if (a.equals(Axis.X)) {
             return mipX;
