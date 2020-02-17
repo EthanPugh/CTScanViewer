@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     @Override
-    public void start(Stage stage) throws Exception{
+    public void start(Stage stage) throws Exception {
         BorderPane root = FXMLLoader.load(getClass().getResource("resources/Window.fxml"));
         stage.setTitle("CT Scan Viewer - Ethan Pugh (985094)");
         stage.setScene(new Scene(root));

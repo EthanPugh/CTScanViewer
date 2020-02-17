@@ -1,8 +1,6 @@
-import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
-import org.omg.CORBA.IMP_LIMIT;
 
 import java.io.*;
 
@@ -23,9 +21,6 @@ public class Volume {
         setSlicesY();
         setSlicesZ();
         setMIP();
-        //setMIPX();
-        //setMIPY();
-        //setMIPZ();
     }
 
     private void setData(String filename) throws IOException {
@@ -110,60 +105,6 @@ public class Volume {
         mipX = ImageManipulator.generateMIP(slicesX);
         mipY = ImageManipulator.generateMIP(slicesY);
         mipZ = ImageManipulator.generateMIP(slicesZ);
-    }
-
-    private void setMIPX() {
-        WritableImage image = new WritableImage(DEPTH, HEIGHT);
-        PixelWriter imageWriter = image.getPixelWriter();
-        short datum;
-        float colMax;
-        for (int j = 0; j < HEIGHT; j++) {
-            for (int k = 0; k < DEPTH; k++) {
-                colMax = -max;
-                for (int i = 0; i < WIDTH; i++) {
-                    datum = data[k][j][i];
-                    colMax = Float.max((((float) datum - (float) min) / ((float) (max - min))), colMax);
-                    imageWriter.setColor(k, j, Color.color(colMax, colMax, colMax, 1.0));
-                }
-            }
-        }
-        mipX = ImageManipulator.resize(image, WIDTH, HEIGHT);
-    }
-
-    private void setMIPY() {
-        WritableImage image = new WritableImage(WIDTH, DEPTH);
-        PixelWriter imageWriter = image.getPixelWriter();
-        short datum;
-        float colMax;
-        for (int k = 0; k < DEPTH; k++) {
-            for (int i = 0; i < WIDTH; i++) {
-                colMax = -max;
-                for (int j = 0; j < HEIGHT; j++) {
-                    datum = data[k][j][i];
-                    colMax = Float.max((((float) datum - (float) min) / ((float) (max - min))), colMax);
-                    imageWriter.setColor(i, k, Color.color(colMax, colMax, colMax, 1.0));
-                }
-            }
-        }
-        mipY = ImageManipulator.resize(image, WIDTH, HEIGHT);
-    }
-
-    private void setMIPZ() {
-        WritableImage image = new WritableImage(WIDTH, HEIGHT);
-        PixelWriter imageWriter = image.getPixelWriter();
-        short datum;
-        float colMax;
-        for (int j = 0; j < HEIGHT; j++) {
-            for (int i = 0; i < WIDTH; i++) {
-                colMax = -max;
-                for (int k = 0; k < DEPTH; k++) {
-                    datum = data[k][j][i];
-                    colMax = Float.max((((float) datum - (float) min) / ((float) (max - min))), colMax);
-                    imageWriter.setColor(i, j, Color.color(colMax, colMax, colMax, 1.0));
-                }
-            }
-        }
-        mipZ = ImageManipulator.resize(image, WIDTH, HEIGHT);
     }
 
     public WritableImage getSlice(int val, Axis a) {
