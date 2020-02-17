@@ -12,7 +12,7 @@ public class Controller {
     private ImageView imageViewX = new ImageView(), imageViewY = new ImageView(), imageViewZ = new ImageView();
 
     @FXML
-    private Slider sliderX, sliderY, sliderZ, sliderXS, sliderYS, sliderZS;
+    private Slider sliderSliceX, sliderSliceY, sliderSliceZ, sliderScaleX, sliderScaleY, sliderScaleZ;
 
     @FXML
     private Button buttonMIPX, buttonMIPY, buttonMIPZ;
@@ -40,38 +40,32 @@ public class Controller {
     }
 
     private void setupSliders() {
-        sliderX.setOnMouseDragged(event -> {
-            sliceValX = sliderX.valueProperty().intValue();
-            imageX = data.getSlice(sliceValX, Axis.X);
+        sliderSliceX.setOnMouseDragged(event -> {
+            imageX = data.getSlice(sliderSliceX.valueProperty().intValue(), Axis.X);
             imageViewX.setImage(imageX);
         });
-        sliderY.setOnMouseDragged(event -> {
-            sliceValY = sliderY.valueProperty().intValue();
-            imageY = data.getSlice(sliceValY, Axis.Y);
+        sliderSliceY.setOnMouseDragged(event -> {
+            imageY = data.getSlice(sliderSliceY.valueProperty().intValue(), Axis.Y);
             imageViewY.setImage(imageY);
         });
-        sliderZ.setOnMouseDragged(event -> {
-            sliceValZ = sliderZ.valueProperty().intValue();
-            imageZ = data.getSlice(sliceValZ, Axis.Z);
+        sliderSliceZ.setOnMouseDragged(event -> {
+            imageZ = data.getSlice(sliderSliceZ.valueProperty().intValue(), Axis.Z);
             imageViewZ.setImage(imageZ);
         });
-        sliderXS.setOnMouseReleased(event -> {
-            scaleValX = sliderXS.valueProperty().floatValue();
-            imageViewX.setImage(data.getScaledSliceX(imageX, scaleValX, scaleValX, sliceValX));
-            imageViewX.setFitHeight(imageX.getHeight() * scaleValX);
-            imageViewX.setFitWidth(imageX.getWidth() * scaleValX);
+        sliderScaleX.setOnMouseReleased(event -> {
+            imageViewX.setImage(ImageManipulator.scale(imageX, sliderScaleX.valueProperty().floatValue()));
+            imageViewX.setFitHeight(imageX.getHeight() * sliderScaleX.valueProperty().floatValue());
+            imageViewX.setFitWidth(imageX.getWidth() * sliderScaleX.valueProperty().floatValue());
         });
-        sliderYS.setOnMouseReleased(event -> {
-            scaleValY = sliderYS.valueProperty().floatValue();
-            imageViewY.setImage(data.getScaledSliceY(imageY, scaleValY, scaleValY, sliceValY));
-            imageViewY.setFitHeight(imageY.getHeight() * scaleValY);
-            imageViewY.setFitWidth(imageY.getWidth() * scaleValY);
+        sliderScaleY.setOnMouseReleased(event -> {
+            imageViewY.setImage(ImageManipulator.scale(imageY, sliderScaleY.valueProperty().floatValue()));
+            imageViewY.setFitHeight(imageY.getHeight() * sliderScaleY.valueProperty().floatValue());
+            imageViewY.setFitWidth(imageY.getWidth() * sliderScaleY.valueProperty().floatValue());
         });
-        sliderZS.setOnMouseReleased(event -> {
-            scaleValZ = sliderZS.valueProperty().floatValue();
-            imageViewZ.setImage(data.getScaledSliceZ(imageZ, scaleValZ, scaleValZ, sliceValZ));
-            imageViewZ.setFitHeight(imageZ.getHeight() * scaleValZ);
-            imageViewZ.setFitWidth(imageZ.getWidth() * scaleValZ);
+        sliderScaleZ.setOnMouseReleased(event -> {
+            imageViewZ.setImage(ImageManipulator.scale(imageZ, sliderScaleZ.valueProperty().floatValue()));
+            imageViewZ.setFitHeight(imageZ.getHeight() * sliderScaleZ.valueProperty().floatValue());
+            imageViewZ.setFitWidth(imageZ.getWidth() * sliderScaleZ.valueProperty().floatValue());
         });
 
     }

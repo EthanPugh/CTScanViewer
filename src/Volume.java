@@ -2,6 +2,7 @@ import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
+import org.omg.CORBA.IMP_LIMIT;
 
 import java.io.*;
 
@@ -64,7 +65,7 @@ public class Volume {
                     imageWriter.setColor(k, j, Color.color(col, col, col, 1.0));
                 }
             }
-            slicesX[i] = image;
+            slicesX[i] = ImageManipulator.resize(image, WIDTH, HEIGHT);
         }
     }
 
@@ -82,7 +83,7 @@ public class Volume {
                     imageWriter.setColor(i, k, Color.color(col, col, col, 1.0));
                 }
             }
-            slicesY[j] = image;
+            slicesY[j] = ImageManipulator.resize(image, WIDTH, HEIGHT);
         }
     }
 
@@ -100,7 +101,7 @@ public class Volume {
                     imageWriter.setColor(i, j, Color.color(col, col, col, 1.0));
                 }
             }
-            slicesZ[k] = image;
+            slicesZ[k] = ImageManipulator.resize(image, WIDTH, HEIGHT);
         }
     }
 
@@ -119,7 +120,7 @@ public class Volume {
                 }
             }
         }
-        mipX = image;
+        mipX = ImageManipulator.resize(image, WIDTH, HEIGHT);
     }
 
     private void setMIPY() {
@@ -137,7 +138,7 @@ public class Volume {
                 }
             }
         }
-        mipY = image;
+        mipY = ImageManipulator.resize(image, WIDTH, HEIGHT);
     }
 
     private void setMIPZ() {
@@ -155,82 +156,7 @@ public class Volume {
                 }
             }
         }
-        mipZ = image;
-    }
-
-    public WritableImage getScaledSliceX(WritableImage oldImage, float scaleX, float scaleY, int sliceVal) {
-        final float oldWidth = (int) oldImage.getWidth();
-        final float newWidth = (int) (oldWidth * scaleX);
-        final float oldHeight = (int) oldImage.getHeight();
-        final float newHeight = (int) (oldHeight * scaleY);
-        System.out.println("Old: " + oldWidth + ", " + oldHeight);
-        System.out.println("New: " + newWidth + ", " + newHeight);
-
-        WritableImage newImage = new WritableImage((int) newWidth, (int) newHeight);
-        PixelWriter newImageW = newImage.getPixelWriter();
-        short datum;
-
-        for (int k = 0; k < newWidth; k++) {
-            for (int j = 0; j < newHeight; j++) {
-                float x = (k * oldWidth / newWidth);
-                float y = (j * oldHeight / newHeight);
-                datum = data[(int) Math.floor(x)][(int) Math.floor(y)][sliceVal];
-                float col = (((float) datum - (float) min) / ((float) (max - min)));
-                newImageW.setColor(k, j, Color.color(col, col, col, 1.0));
-            }
-        }
-        return newImage;
-    }
-
-    public WritableImage getScaledSliceY(WritableImage oldImage, float scaleX, float scaleY, int sliceVal) {
-        final float oldWidth = (int) oldImage.getWidth();
-        final float newWidth = (int) (oldWidth * scaleX);
-        final float oldHeight = (int) oldImage.getHeight();
-        final float newHeight = (int) (oldHeight * scaleY);
-        System.out.println("Old: " + oldWidth + ", " + oldHeight);
-        System.out.println("New: " + newWidth + ", " + newHeight);
-
-        WritableImage newImage = new WritableImage((int) newWidth, (int) newHeight);
-        PixelWriter newImageW = newImage.getPixelWriter();
-        short datum;
-
-        for (int i = 0; i < newWidth; i++) {
-            for (int k = 0; k < newHeight; k++) {
-                float x = (i * oldWidth / newWidth);
-                float y = (k * oldHeight / newHeight);
-                datum = data[(int) Math.floor(y)][sliceVal][(int) Math.floor(x)];
-                float col = (((float) datum - (float) min) / ((float) (max - min)));
-                newImageW.setColor(i, k, Color.color(col, col, col, 1.0));
-
-            }
-        }
-        return newImage;
-    }
-
-    public WritableImage getScaledSliceZ(WritableImage oldImage, float scaleX, float scaleY, int sliceVal) {
-        final float oldWidth = (int) oldImage.getWidth();
-        final float newWidth = (int) (oldWidth * scaleX);
-        final float oldHeight = (int) oldImage.getHeight();
-        final float newHeight = (int) (oldHeight * scaleY);
-        System.out.println("Old: " + oldWidth + ", " + oldHeight);
-        System.out.println("New: " + newWidth + ", " + newHeight);
-
-        WritableImage newImage = new WritableImage((int) newWidth, (int) newHeight);
-        PixelWriter newImageW = newImage.getPixelWriter();
-        short datum;
-
-        for (int i = 0; i < newWidth; i++) {
-            for (int j = 0; j < newHeight; j++) {
-                float x = (i * oldWidth / newWidth);
-                float y = (j * oldHeight / newHeight);
-
-                datum = data[sliceVal][(int) Math.floor(y)][(int) Math.floor(x)];
-                float col = (((float) datum - (float) min) / ((float) (max - min)));
-                newImageW.setColor(i, j, Color.color(col, col, col, 1.0));
-
-            }
-        }
-        return newImage;
+        mipZ = ImageManipulator.resize(image, WIDTH, HEIGHT);
     }
 
     public WritableImage getSlice(int val, Axis a) {
