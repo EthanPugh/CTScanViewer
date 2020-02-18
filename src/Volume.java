@@ -27,6 +27,7 @@ public class Volume {
      * @throws IOException If the file is not found.
      */
     public Volume(String filename, int width, int height, int depth) throws IOException {
+        long s = System.currentTimeMillis();
         this.width = width;
         this.height = height;
         this.depth = depth;
@@ -37,7 +38,8 @@ public class Volume {
         setMIPX();
         setMIPY();
         setMIPZ();
-        System.out.println("\nVolume creation successful");
+        long f = System.currentTimeMillis();
+        System.out.println("\nVolume created successfully in " + (f - s) + "ms.");
     }
 
     /**
@@ -67,7 +69,7 @@ public class Volume {
             }
         }
         in.close();
-        System.out.println("Volume data generated successfully (Min: " + min + ", Max: " + max + ")");
+        System.out.println("CT image data generated successfully (Min: " + min + ", Max: " + max + ")");
     }
 
     /**
