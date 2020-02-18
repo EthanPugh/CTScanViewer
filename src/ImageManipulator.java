@@ -13,8 +13,8 @@ public class ImageManipulator {
     /**
      * Resize an image to a new specified width and height.
      *
-     * @param oldImage The image to be resized.
-     * @param newWidth The width of the new image/resized image.
+     * @param oldImage  The image to be resized.
+     * @param newWidth  The width of the new image/resized image.
      * @param newHeight The height of the new image/resized image.
      * @return The same image but resized.
      */
@@ -27,9 +27,9 @@ public class ImageManipulator {
 
         for (int x = 0; x < newWidth; x++) {
             for (int y = 0; y < newHeight; y++) {
-                float xScaled = (x * oldWidth / newWidth);
-                float yScaled = (y * oldHeight / newHeight);
-                Color col = oldImageR.getColor((int) xScaled, (int) yScaled);
+                float xNew = (x * oldWidth / newWidth);
+                float yNew = (y * oldHeight / newHeight);
+                Color col = oldImageR.getColor((int) xNew, (int) yNew);
                 newImageW.setColor(x, y, col);
             }
         }
@@ -40,7 +40,7 @@ public class ImageManipulator {
      * Scale an image by a specified amount.
      *
      * @param oldImage The image to be scaled.
-     * @param scale The amount to increase/decrease the size of the image.
+     * @param scale    The amount to increase/decrease the size of the image.
      * @return The same image but scaled accordingly.
      */
     public static WritableImage scale(WritableImage oldImage, final float scale) {
@@ -57,16 +57,16 @@ public class ImageManipulator {
      * @return A single image of the MIP.
      */
     public static WritableImage generateMIP(WritableImage[] slices) {
-        final int WIDTH = (int) slices[0].getWidth();
-        final int HEIGHT = (int) slices[0].getHeight();
-        WritableImage mip = new WritableImage(WIDTH, HEIGHT);
+        final int width = (int) slices[0].getWidth();
+        final int height = (int) slices[0].getHeight();
+        WritableImage mip = new WritableImage(width, height);
         PixelWriter mipW = mip.getPixelWriter();
         PixelReader mipR = mip.getPixelReader();
         PixelReader sliceR;
         int colMax;
 
-        for (int x = 0; x < WIDTH; x++) {
-            for (int y = 0; y < HEIGHT; y++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 for (WritableImage slice : slices) {
                     sliceR = slice.getPixelReader();
                     colMax = Integer.max(sliceR.getArgb(x, y), mipR.getArgb(x, y));

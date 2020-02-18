@@ -21,9 +21,9 @@ public class Volume {
      * Constructor for a given volume of data.
      *
      * @param filename The path and name of the file to be read.
-     * @param width The width of the volume.
-     * @param height The height of the volume.
-     * @param depth The depth of the volume.
+     * @param width    The width of the volume.
+     * @param height   The height of the volume.
+     * @param depth    The depth of the volume.
      * @throws IOException If the file is not found.
      */
     public Volume(String filename, int width, int height, int depth) throws IOException {
@@ -34,7 +34,10 @@ public class Volume {
         setSlicesX();
         setSlicesY();
         setSlicesZ();
-        setMIP();
+        setMIPX();
+        setMIPY();
+        setMIPZ();
+        System.out.println("\nVolume creation successful");
     }
 
     /**
@@ -63,8 +66,8 @@ public class Volume {
                 }
             }
         }
-        System.out.println("Min: " + min + ", Max: " + max);
         in.close();
+        System.out.println("Volume data generated successfully (Min: " + min + ", Max: " + max + ")");
     }
 
     /**
@@ -86,6 +89,7 @@ public class Volume {
             }
             slicesX[i] = ImageManipulator.resize(image, width, height);
         }
+        System.out.println("X-axis slices generated successfully");
     }
 
     /**
@@ -107,6 +111,7 @@ public class Volume {
             }
             slicesY[j] = ImageManipulator.resize(image, width, height);
         }
+        System.out.println("Y-axis slices generated successfully");
     }
 
     /**
@@ -128,22 +133,38 @@ public class Volume {
             }
             slicesZ[k] = ImageManipulator.resize(image, width, height);
         }
+        System.out.println("Z-axis slices generated successfully");
     }
 
     /**
-     * Retrieves the MIPs for each axis using the ImageManipulator.
+     * Sets the MIP for the x-axis using the ImageManipulator.
      */
-    private void setMIP() {
+    private void setMIPX() {
         mipX = ImageManipulator.generateMIP(slicesX);
+        System.out.println("X-axis MIP generated successfully");
+    }
+
+    /**
+     * Sets the MIP for the y-axis using the ImageManipulator.
+     */
+    private void setMIPY() {
         mipY = ImageManipulator.generateMIP(slicesY);
+        System.out.println("Y-axis MIP generated successfully");
+    }
+
+    /**
+     * Sets the MIP for the z-axis using the ImageManipulator.
+     */
+    private void setMIPZ() {
         mipZ = ImageManipulator.generateMIP(slicesZ);
+        System.out.println("Z-axis MIP generated successfully");
     }
 
     /**
      * Gets an image of a slice from one of the axes.
      *
      * @param val The slice number to get.
-     * @param a The axis to get the slice from.
+     * @param a   The axis to get the slice from.
      * @return An image of a slice.
      */
     public WritableImage getSlice(int val, Axis a) {
