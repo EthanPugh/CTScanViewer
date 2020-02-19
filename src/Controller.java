@@ -3,6 +3,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import jdk.nashorn.internal.ir.debug.ClassHistogramElement;
 
 import java.io.IOException;
 
@@ -69,21 +70,9 @@ public class Controller {
             imageZ = data.getSlice(sliderSliceZ.valueProperty().intValue(), Axis.Z);
             imageViewZ.setImage(imageZ);
         });
-        sliderScaleX.setOnMouseReleased(event -> {
-            imageViewX.setImage(ImageManipulator.scale(imageX, sliderScaleX.valueProperty().floatValue()));
-            imageViewX.setFitHeight(imageX.getHeight() * sliderScaleX.valueProperty().floatValue());
-            imageViewX.setFitWidth(imageX.getWidth() * sliderScaleX.valueProperty().floatValue());
-        });
-        sliderScaleY.setOnMouseReleased(event -> {
-            imageViewY.setImage(ImageManipulator.scale(imageY, sliderScaleY.valueProperty().floatValue()));
-            imageViewY.setFitHeight(imageY.getHeight() * sliderScaleY.valueProperty().floatValue());
-            imageViewY.setFitWidth(imageY.getWidth() * sliderScaleY.valueProperty().floatValue());
-        });
-        sliderScaleZ.setOnMouseReleased(event -> {
-            imageViewZ.setImage(ImageManipulator.scale(imageZ, sliderScaleZ.valueProperty().floatValue()));
-            imageViewZ.setFitHeight(imageZ.getHeight() * sliderScaleZ.valueProperty().floatValue());
-            imageViewZ.setFitWidth(imageZ.getWidth() * sliderScaleZ.valueProperty().floatValue());
-        });
+        sliderScaleX.setOnMouseDragged(event -> imageViewX.setImage(ImageManipulator.scale(imageX, sliderScaleX.valueProperty().floatValue())));
+        sliderScaleY.setOnMouseDragged(event -> imageViewY.setImage(ImageManipulator.scale(imageY, sliderScaleY.valueProperty().floatValue())));
+        sliderScaleZ.setOnMouseDragged(event -> imageViewZ.setImage(ImageManipulator.scale(imageZ, sliderScaleZ.valueProperty().floatValue())));
 
     }
 

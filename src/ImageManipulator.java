@@ -21,15 +21,15 @@ public class ImageManipulator {
     public static WritableImage resize(WritableImage oldImage, final float newWidth, final float newHeight) {
         final float oldWidth = (float) oldImage.getWidth();
         final float oldHeight = (float) oldImage.getHeight();
-        WritableImage newImage = new WritableImage((int) newWidth, (int) newHeight);
+        WritableImage newImage = new WritableImage((int) Math.floor(newWidth), (int) Math.floor(newHeight));
         PixelWriter newImageW = newImage.getPixelWriter();
         PixelReader oldImageR = oldImage.getPixelReader();
 
-        for (int x = 0; x < newWidth; x++) {
-            for (int y = 0; y < newHeight; y++) {
+        for (int x = 0; x < newWidth - 1; x++) {
+            for (int y = 0; y < newHeight - 1; y++) {
                 float xNew = (x * oldWidth / newWidth);
                 float yNew = (y * oldHeight / newHeight);
-                Color col = oldImageR.getColor((int) xNew, (int) yNew);
+                Color col = oldImageR.getColor((int) Math.floor(xNew), (int) Math.floor(yNew));
                 newImageW.setColor(x, y, col);
             }
         }
@@ -68,10 +68,22 @@ public class ImageManipulator {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 for (WritableImage slice : slices) {
+                    /* Interesting accident.
+                    Color c;
+                    sliceR = slice.getPixelReader();
+                    if (sliceR.getColor(x, y).hashCode() < mipR.getColor(x, y).hashCode()) {
+                        c = sliceR.getColor(x, y);
+                    } else {
+                        c = mipR.getColor(x, y);
+                    }
+                    mipW.setColor(x, y, Color.color(c.getRed(), c.getGreen(), c.getBlue(), c.getOpacity()));
+                    */
+
                     sliceR = slice.getPixelReader();
                     colMax = Integer.max(sliceR.getArgb(x, y), mipR.getArgb(x, y));
                     java.awt.Color c = new java.awt.Color(colMax);
                     mipW.setColor(x, y, Color.rgb(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha() / 255.0));
+
                 }
             }
         }
