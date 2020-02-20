@@ -61,12 +61,12 @@ public class SliceWindowController {
         int c = 0;
 
         for (WritableImage slice : data.getThumbnails()) {
-            if (c <= 10) {
+            if (c <= 12) {
                 gridPaneThumbs.add(new ImageView(ImageManipulator.resize(slice, 70, 70)), c, r);
                 c++;
             } else {
                 c = 0;
-                r ++;
+                r++;
                 gridPaneThumbs.add(new ImageView(ImageManipulator.resize(slice, 70, 70)), c, r);
             }
         }
