@@ -63,27 +63,18 @@ public class ImageManipulator {
         PixelWriter mipW = mip.getPixelWriter();
         PixelReader mipR = mip.getPixelReader();
         PixelReader sliceR;
-        int colMax;
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 for (WritableImage slice : slices) {
-                    /* Interesting accident.
                     Color c;
                     sliceR = slice.getPixelReader();
-                    if (sliceR.getColor(x, y).hashCode() < mipR.getColor(x, y).hashCode()) {
+                    if (sliceR.getArgb(x, y) > mipR.getArgb(x, y)) {
                         c = sliceR.getColor(x, y);
                     } else {
                         c = mipR.getColor(x, y);
                     }
-                    mipW.setColor(x, y, Color.color(c.getRed(), c.getGreen(), c.getBlue(), c.getOpacity()));
-                    */
-
-                    sliceR = slice.getPixelReader();
-                    colMax = Integer.max(sliceR.getArgb(x, y), mipR.getArgb(x, y));
-                    java.awt.Color c = new java.awt.Color(colMax);
-                    mipW.setColor(x, y, Color.rgb(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha() / 255.0));
-
+                    mipW.setColor(x, y, Color.color(c.getRed(), c.getGreen(), c.getBlue()));
                 }
             }
         }

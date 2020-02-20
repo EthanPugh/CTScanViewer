@@ -195,6 +195,29 @@ public class Volume {
         }
     }
 
+    /**
+     * Gets an array of thumbnails of each slice.
+     *
+     * @return An array of slice thumbnails.
+     */
+    public WritableImage[] getThumbnails() {
+        WritableImage[] thumbnails = new WritableImage[slicesX.length + slicesY.length + slicesZ.length];
+        int i = 0;
+        for (WritableImage slice : slicesX) {
+            thumbnails[i] = slice;
+            i++;
+        }
+        for (WritableImage slice : slicesY) {
+            thumbnails[i] = slice;
+            i++;
+        }
+        for (WritableImage slice : slicesZ) {
+            thumbnails[i] = slice;
+            i++;
+        }
+        return thumbnails;
+    }
+
 }
 
 

@@ -3,7 +3,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
-import jdk.nashorn.internal.ir.debug.ClassHistogramElement;
+import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ import java.io.IOException;
  *
  * @author Ethan Pugh
  */
-public class Controller {
+public class SliceWindowController {
 
     @FXML
     private ImageView imageViewX = new ImageView(), imageViewY = new ImageView(), imageViewZ = new ImageView();
@@ -22,6 +22,9 @@ public class Controller {
 
     @FXML
     private Button buttonMIPX, buttonMIPY, buttonMIPZ;
+
+    @FXML
+    private GridPane gridPaneThumbs;
 
     private WritableImage imageX, imageY, imageZ;
 
@@ -36,8 +39,9 @@ public class Controller {
     private void initialize() throws IOException {
         data = new Volume("src/resources/CT_head.raw", 256, 256, 113);
         setupImages();
-        setupSliders();
+        setupThumbnails();
         setupButtons();
+        setupSliders();
     }
 
     /**
@@ -50,6 +54,41 @@ public class Controller {
         imageViewX.setImage(imageX);
         imageViewY.setImage(imageY);
         imageViewZ.setImage(imageZ);
+    }
+
+    private void setupThumbnails() {
+        int r = 0;
+        int c = 0;
+
+        for (WritableImage slice : data.getThumbnails()) {
+            if (c <= 10) {
+                gridPaneThumbs.add(new ImageView(ImageManipulator.resize(slice, 70, 70)), c, r);
+                c++;
+            } else {
+                c = 0;
+                r ++;
+                gridPaneThumbs.add(new ImageView(ImageManipulator.resize(slice, 70, 70)), c, r);
+            }
+        }
+    }
+
+    /**
+     * Sets up event handlers for each MIP button:
+     * Each button retrieves the MIP for the specified axis.
+     */
+    private void setupButtons() {
+        buttonMIPX.setOnMouseClicked(event -> {
+            imageX = data.getMIP(Axis.X);
+            imageViewX.setImage(imageX);
+        });
+        buttonMIPY.setOnMouseClicked(event -> {
+            imageY = data.getMIP(Axis.Y);
+            imageViewY.setImage(imageY);
+        });
+        buttonMIPZ.setOnMouseClicked(event -> {
+            imageZ = data.getMIP(Axis.Z);
+            imageViewZ.setImage(imageZ);
+        });
     }
 
     /**
@@ -73,26 +112,6 @@ public class Controller {
         sliderScaleX.setOnMouseDragged(event -> imageViewX.setImage(ImageManipulator.scale(imageX, sliderScaleX.valueProperty().floatValue())));
         sliderScaleY.setOnMouseDragged(event -> imageViewY.setImage(ImageManipulator.scale(imageY, sliderScaleY.valueProperty().floatValue())));
         sliderScaleZ.setOnMouseDragged(event -> imageViewZ.setImage(ImageManipulator.scale(imageZ, sliderScaleZ.valueProperty().floatValue())));
-
-    }
-
-    /**
-     * Sets up event handlers for each MIP button:
-     * Each button retrieves the MIP for the specified axis.
-     */
-    private void setupButtons() {
-        buttonMIPX.setOnMouseClicked(event -> {
-            imageX = data.getMIP(Axis.X);
-            imageViewX.setImage(imageX);
-        });
-        buttonMIPY.setOnMouseClicked(event -> {
-            imageY = data.getMIP(Axis.Y);
-            imageViewY.setImage(imageY);
-        });
-        buttonMIPZ.setOnMouseClicked(event -> {
-            imageZ = data.getMIP(Axis.Z);
-            imageViewZ.setImage(imageZ);
-        });
     }
 
 }
