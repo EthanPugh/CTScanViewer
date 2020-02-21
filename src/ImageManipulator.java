@@ -67,13 +67,8 @@ public class ImageManipulator {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 for (WritableImage slice : slices) {
-                    Color c;
                     sliceR = slice.getPixelReader();
-                    if (sliceR.getArgb(x, y) > mipR.getArgb(x, y)) {
-                        c = sliceR.getColor(x, y);
-                    } else {
-                        c = mipR.getColor(x, y);
-                    }
+                    Color c = sliceR.getArgb(x, y) > mipR.getArgb(x, y) ? sliceR.getColor(x, y) : mipR.getColor(x, y);
                     mipW.setColor(x, y, Color.color(c.getRed(), c.getGreen(), c.getBlue()));
                 }
             }
