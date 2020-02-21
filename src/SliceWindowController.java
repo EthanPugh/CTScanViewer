@@ -56,19 +56,21 @@ public class SliceWindowController {
         imageViewZ.setImage(imageZ);
     }
 
+    /**
+     * Sets the GridPane up with all the thumbnails.
+     */
     private void setupThumbnails() {
         int r = 0;
         int c = 0;
-
         for (WritableImage slice : data.getThumbnails()) {
-            if (c <= 12) {
-                gridPaneThumbs.add(new ImageView(ImageManipulator.resize(slice, 70, 70)), c, r);
-                c++;
-            } else {
+            ImageView view = new ImageView(ImageManipulator.resize(slice, 100, 100));
+            if (c > 255) {
                 c = 0;
                 r++;
-                gridPaneThumbs.add(new ImageView(ImageManipulator.resize(slice, 70, 70)), c, r);
             }
+            if (r < 1) view.setRotate(90);
+            gridPaneThumbs.add(view, c, r);
+            c++;
         }
     }
 
@@ -93,7 +95,7 @@ public class SliceWindowController {
 
     /**
      * Sets up event handlers for each slider:
-     * Slice sliders will retrieve a new image based on their value;
+     * Slice sliders will retrieve a new axis-specific image based on their value;
      * Scale sliders will send the currently displayed image to be scaled.
      */
     private void setupSliders() {

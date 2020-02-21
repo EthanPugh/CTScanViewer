@@ -91,7 +91,7 @@ public class Volume {
             }
             slicesX[i] = ImageManipulator.resize(image, width, height);
         }
-        System.out.println("X-axis slices generated successfully");
+        System.out.println("X-axis slices generated successfully (" + slicesX.length + " slices)");
     }
 
     /**
@@ -113,7 +113,7 @@ public class Volume {
             }
             slicesY[j] = ImageManipulator.resize(image, width, height);
         }
-        System.out.println("Y-axis slices generated successfully");
+        System.out.println("Y-axis slices generated successfully (" + slicesY.length + " slices)");
     }
 
     /**
@@ -135,7 +135,7 @@ public class Volume {
             }
             slicesZ[k] = ImageManipulator.resize(image, width, height);
         }
-        System.out.println("Z-axis slices generated successfully");
+        System.out.println("Z-axis slices generated successfully (" + slicesZ.length + " slices)");
     }
 
     /**

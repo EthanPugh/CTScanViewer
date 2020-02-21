@@ -4,7 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0"
             prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="SliceWindowController">
     <center>
@@ -40,8 +40,8 @@
         </Pane>
     </center>
     <bottom>
-        <ScrollPane prefHeight="209.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
-            <GridPane fx:id="gridPaneThumbs" hgap="8.0" prefHeight="206.0" prefWidth="981.0" vgap="8.0">
+        <ScrollPane pannable="true" prefHeight="344.0" prefWidth="1000.0" BorderPane.alignment="CENTER">
+            <GridPane fx:id="gridPaneThumbs" hgap="8.0" prefHeight="0.0" prefWidth="0.0" vgap="8.0">
             </GridPane>
         </ScrollPane>
     </bottom>
