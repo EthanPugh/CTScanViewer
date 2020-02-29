@@ -6,6 +6,7 @@ import java.io.*;
 
 /**
  * Defines a single set of data for a 3D image or CT scan.
+ * All code in this class is my own.
  *
  * @author Ethan Pugh
  */
@@ -216,6 +217,18 @@ public class Volume {
             i++;
         }
         return thumbnails;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getDepth() {
+        return depth;
     }
 
 }

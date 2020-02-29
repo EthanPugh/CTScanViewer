@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 
 /**
  * Manipulates images in various ways.
+ * All code in this class is my own.
  *
  * @author Ethan Pugh
  */
@@ -21,7 +22,7 @@ public class ImageManipulator {
     public static WritableImage resize(WritableImage oldImage, final float newWidth, final float newHeight) {
         final float oldWidth = (float) oldImage.getWidth();
         final float oldHeight = (float) oldImage.getHeight();
-        WritableImage newImage = new WritableImage((int) Math.floor(newWidth), (int) Math.floor(newHeight));
+        WritableImage newImage = new WritableImage((int) (newWidth), (int) (newHeight));
         PixelWriter newImageW = newImage.getPixelWriter();
         PixelReader oldImageR = oldImage.getPixelReader();
 
@@ -29,7 +30,7 @@ public class ImageManipulator {
             for (int y = 0; y < newHeight - 1; y++) {
                 float xNew = (x * oldWidth / newWidth);
                 float yNew = (y * oldHeight / newHeight);
-                Color col = oldImageR.getColor((int) Math.floor(xNew), (int) Math.floor(yNew));
+                Color col = oldImageR.getColor((int) xNew, (int) yNew);
                 newImageW.setColor(x, y, col);
             }
         }
