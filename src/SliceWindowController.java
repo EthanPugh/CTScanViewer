@@ -38,7 +38,7 @@ public class SliceWindowController {
      */
     @FXML
     private void initialize() throws IOException {
-        data = new Volume("src/resources/CT_head.raw", 256, 256, 113);
+        data = new Volume("src/resources/CThead.raw", 256, 256, 113);
         setupImages();
         setupThumbnails();
         setupButtons();
