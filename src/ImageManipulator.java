@@ -57,9 +57,9 @@ public class ImageManipulator {
                     Color C00 = oldImageR.getColor(x0, y0);
                     Color C11 = oldImageR.getColor(x1, y1);
 
-                    double CX = C00.getRed() + (C11.getRed() - C00.getRed()) * ((oldX - x0) / (x1 - x0));
-                    double CY = C00.getRed() + (C11.getRed() - C00.getRed()) * ((oldY - y0) / (y1 - y0));
-                    double col = CX + (CY - CX) * ((oldY - y0) / (y1 - y0));
+                    double midX = C00.getRed() + (C11.getRed() - C00.getRed()) * ((oldX - x0) / (x1 - x0));
+                    double midY = C00.getRed() + (C11.getRed() - C00.getRed()) * ((oldY - y0) / (y1 - y0));
+                    double col = midX + (midY - midX) * ((oldY - y0) / (y1 - y0));
 
                     newImageW.setColor(x, y, Color.color(col, col, col, 1.0));
                 }
