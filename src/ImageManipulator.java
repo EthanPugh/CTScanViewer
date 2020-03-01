@@ -7,7 +7,7 @@ import javafx.scene.paint.Color;
  * Manipulates images in various ways.
  * All code in this class is my own.
  *
- * @author Ethan Pugh
+ * @author Ethan Pugh (985094)
  */
 public class ImageManipulator {
 

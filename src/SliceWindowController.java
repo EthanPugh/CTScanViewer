@@ -11,7 +11,7 @@ import java.io.IOException;
  * Controller for the main window which displays various pieces of data from the CT scan.
  * All code in this class is my own.
  *
- * @author Ethan Pugh
+ * @author Ethan Pugh (985094)
  */
 public class SliceWindowController {
 

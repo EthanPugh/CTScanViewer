@@ -8,7 +8,7 @@ import java.io.*;
  * Defines a single set of data for a 3D image or CT scan.
  * All code in this class is my own.
  *
- * @author Ethan Pugh
+ * @author Ethan Pugh (985094)
  */
 public class Volume {
 
