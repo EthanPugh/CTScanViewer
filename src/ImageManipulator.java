@@ -40,7 +40,6 @@ public class ImageManipulator {
         PixelWriter newImageW = newImage.getPixelWriter();
         PixelReader oldImageR = oldImage.getPixelReader();
 
-
         for (int x = 0; x < newWidth - 1; x++) {
             for (int y = 0; y < newHeight - 1; y++) {
                 float oldX = x * oldWidth / newWidth;
@@ -52,14 +51,16 @@ public class ImageManipulator {
                 int y1 = y0 + 1;
 
                 if (x0 >= oldWidth - 1 || y0 >= oldHeight - 1) {
-                    newImageW.setColor(x, y, oldImageR.getColor((int) Math.floor(oldX),(int) Math.floor(oldY)));
+                    newImageW.setColor(x, y, oldImageR.getColor((int) Math.floor(oldX), (int) Math.floor(oldY)));
                 } else {
-                    Color C00 = oldImageR.getColor(x0, y0);
-                    Color C11 = oldImageR.getColor(x1, y1);
+                    Color TL = oldImageR.getColor(x0, y0);
+                    Color TR = oldImageR.getColor(x1, y0);
+                    Color BL = oldImageR.getColor(x0, y1);
+                    Color BR = oldImageR.getColor(x1, y1);
 
-                    double midX = C00.getRed() + (C11.getRed() - C00.getRed()) * ((oldX - x0) / (x1 - x0));
-                    double midY = C00.getRed() + (C11.getRed() - C00.getRed()) * ((oldY - y0) / (y1 - y0));
-                    double col = midX + (midY - midX) * ((oldY - y0) / (y1 - y0));
+                    double midT = BL.getRed() + (BR.getRed() - BL.getRed()) * ((oldX - x0) / (x1 - x0));
+                    double midB = TL.getRed() + (TR.getRed() - TL.getRed()) * ((oldX - x0) / (x1 - x0));
+                    double col = midT + (midB - midT) * ((oldY - y0) / (y1 - y0));
 
                     newImageW.setColor(x, y, Color.color(col, col, col, 1.0));
                 }
