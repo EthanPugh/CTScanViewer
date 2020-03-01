@@ -90,7 +90,7 @@ public class Volume {
                     imageWriter.setColor(k, j, Color.color(col, col, col, 1.0));
                 }
             }
-            slicesX[i] = ImageManipulator.resize(image, width, height);
+            slicesX[i] = image;
         }
         System.out.println("X-axis slices generated successfully (" + slicesX.length + " slices)");
     }
@@ -112,7 +112,7 @@ public class Volume {
                     imageWriter.setColor(i, k, Color.color(col, col, col, 1.0));
                 }
             }
-            slicesY[j] = ImageManipulator.resize(image, width, height);
+            slicesY[j] = image;
         }
         System.out.println("Y-axis slices generated successfully (" + slicesY.length + " slices)");
     }
@@ -134,7 +134,7 @@ public class Volume {
                     imageWriter.setColor(i, j, Color.color(col, col, col, 1.0));
                 }
             }
-            slicesZ[k] = ImageManipulator.resize(image, width, height);
+            slicesZ[k] = image;
         }
         System.out.println("Z-axis slices generated successfully (" + slicesZ.length + " slices)");
     }
