@@ -49,9 +49,9 @@ public class SliceWindowController {
      * Sets the ImageViews to the first slice of each axis.
      */
     private void setupImages() {
-        imageX = data.getSlice(0, Axis.X);
-        imageY = data.getSlice(0, Axis.Y);
-        imageZ = data.getSlice(0, Axis.Z);
+        imageX = ImageManipulator.resize(data.getSlice(0, Axis.X), 256, 256);
+        imageY = ImageManipulator.resize(data.getSlice(0, Axis.Y), 256, 256);
+        imageZ = ImageManipulator.resize(data.getSlice(0, Axis.Z), 256, 256);
         imageViewX.setImage(imageX);
         imageViewY.setImage(imageY);
         imageViewZ.setImage(imageZ);
@@ -71,6 +71,7 @@ public class SliceWindowController {
             }
             if (r < 1) view.setRotate(90);
             gridPaneThumbs.add(view, c, r);
+            // System.out.println("Col: " + c + ", Row: " + r); // Debug line to test all slices printing.
             c++;
         }
     }
@@ -81,15 +82,15 @@ public class SliceWindowController {
      */
     private void setupButtons() {
         buttonMIPX.setOnMouseClicked(event -> {
-            imageX = data.getMIP(Axis.X);
+            imageX = ImageManipulator.resize(data.getMIP(Axis.X), 256, 256);
             imageViewX.setImage(imageX);
         });
         buttonMIPY.setOnMouseClicked(event -> {
-            imageY = data.getMIP(Axis.Y);
+            imageY = ImageManipulator.resize(data.getMIP(Axis.Y), 256, 256);
             imageViewY.setImage(imageY);
         });
         buttonMIPZ.setOnMouseClicked(event -> {
-            imageZ = data.getMIP(Axis.Z);
+            imageZ = ImageManipulator.resize(data.getMIP(Axis.Z), 256, 256);
             imageViewZ.setImage(imageZ);
         });
     }
@@ -100,17 +101,25 @@ public class SliceWindowController {
      * Scale sliders will send the currently displayed image to be scaled.
      */
     private void setupSliders() {
+        sliderSliceX.setMax(data.getWidth() - 1);
+        sliderSliceY.setMax(data.getHeight() - 1);
+        sliderSliceZ.setMax(data.getDepth() - 1);
         sliderSliceX.setOnMouseDragged(event -> {
-            imageX = data.getSlice(sliderSliceX.valueProperty().intValue(), Axis.X);
+            imageX = ImageManipulator.resize(data.getSlice(sliderSliceX.valueProperty().intValue(), Axis.X), 256, 256);
             imageViewX.setImage(imageX);
+            sliderScaleX.valueProperty().setValue(1);
         });
         sliderSliceY.setOnMouseDragged(event -> {
-            imageY = data.getSlice(sliderSliceY.valueProperty().intValue(), Axis.Y);
+            imageY = ImageManipulator.resize(data.getSlice(sliderSliceY.valueProperty().intValue(), Axis.Y), 256, 256);
             imageViewY.setImage(imageY);
+            sliderScaleY.valueProperty().setValue(1);
+
         });
         sliderSliceZ.setOnMouseDragged(event -> {
-            imageZ = data.getSlice(sliderSliceZ.valueProperty().intValue(), Axis.Z);
+            imageZ = ImageManipulator.resize(data.getSlice(sliderSliceZ.valueProperty().intValue(), Axis.Z), 256, 256);
             imageViewZ.setImage(imageZ);
+            sliderScaleZ.valueProperty().setValue(1);
+
         });
         sliderScaleX.setOnMouseDragged(event -> imageViewX.setImage(ImageManipulator.scale(imageX, sliderScaleX.valueProperty().floatValue())));
         sliderScaleY.setOnMouseDragged(event -> imageViewY.setImage(ImageManipulator.scale(imageY, sliderScaleY.valueProperty().floatValue())));
