@@ -1,4 +1,5 @@
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.image.ImageView;
@@ -41,6 +42,7 @@ public class SliceWindowController {
         data = new Volume("src/resources/CThead.raw", 256, 256, 113);
         setupImages();
         setupThumbnails();
+        setupGridPane();
         setupButtons();
         setupSliders();
     }
@@ -74,6 +76,33 @@ public class SliceWindowController {
             // System.out.println("Col: " + c + ", Row: " + r); // Debug line to test all slices printing.
             c++;
         }
+    }
+
+    /**
+     * Setup handles for thumbnail previews.
+     */
+    private void setupGridPane(){
+        gridPaneThumbs.setOnMouseClicked(e -> {
+            Node source = e.getPickResult().getIntersectedNode();
+            int c = GridPane.getColumnIndex(source);
+            int r = GridPane.getRowIndex(source);
+            if (r == 0) {
+                imageX = ImageManipulator.resize(data.getSlice(c, Axis.X), 256, 256);
+                imageViewX.setImage(imageX);
+                sliderSliceX.valueProperty().setValue(c);
+                sliderScaleX.valueProperty().setValue(1);
+            } else if (r == 1) {
+                imageY = ImageManipulator.resize(data.getSlice(c, Axis.Y), 256, 256);
+                imageViewY.setImage(imageY);
+                sliderSliceY.valueProperty().setValue(c);
+                sliderScaleY.valueProperty().setValue(1);
+            } else if (r == 2) {
+                imageZ = ImageManipulator.resize(data.getSlice(c, Axis.Z), 256, 256);
+                imageViewZ.setImage(imageZ);
+                sliderSliceZ.valueProperty().setValue(c);
+                sliderScaleZ.valueProperty().setValue(1);
+            }
+        });
     }
 
     /**
