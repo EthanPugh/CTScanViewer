@@ -84,14 +84,20 @@ public class SliceWindowController {
         buttonMIPX.setOnMouseClicked(event -> {
             imageX = ImageManipulator.resize(data.getMIP(Axis.X), 256, 256);
             imageViewX.setImage(imageX);
+            sliderScaleX.valueProperty().setValue(1);
+
         });
         buttonMIPY.setOnMouseClicked(event -> {
             imageY = ImageManipulator.resize(data.getMIP(Axis.Y), 256, 256);
             imageViewY.setImage(imageY);
+            sliderScaleY.valueProperty().setValue(1);
+
         });
         buttonMIPZ.setOnMouseClicked(event -> {
             imageZ = ImageManipulator.resize(data.getMIP(Axis.Z), 256, 256);
             imageViewZ.setImage(imageZ);
+            sliderScaleZ.valueProperty().setValue(1);
+
         });
     }
 
