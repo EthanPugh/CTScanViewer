@@ -1,2 +1,3 @@
-# CTScanViewer
-Basic implementation of a 3D image interpreter that displays (and manipulates) the image in realtime via a GUI.
+# volume-visualiser
+
+Basic implementation of a 3D volume interpreter that displays (and manipulates) cross-sections of the volume in realtime via a GUI.
